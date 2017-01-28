@@ -10,7 +10,10 @@ import java.awt.event.*;
 public class CinemaBooking extends JFrame implements ActionListener{
 	
 	JPanel mainContentPanel = new JPanel();
-	JPanel cardPanel = buildCardPanel1();
+	JPanel cardPanel1 = buildCardPanel1();
+	JPanel cardPanel2 = buildCardPanel2();
+	JPanel cardPanel3 = buildCardPanel3();
+
 	JPanel buttonsPanel;
 	JButton nextButton;
 	JButton backButton;
@@ -63,9 +66,11 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		leftColNav.add(leftColTitle);
 
 		
+		// cards to mainContentPane
+		mainContentPanel.add(cardPanel1);
+		mainContentPanel.add(cardPanel2);
+		mainContentPanel.add(cardPanel3);
 
-		
-		mainContentPanel.add(cardPanel);
 		
 		containerPanel.add(titlePanel, BorderLayout.NORTH); 
 		containerPanel.add(leftColNav, BorderLayout.WEST); 
@@ -80,7 +85,11 @@ public class CinemaBooking extends JFrame implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e){
+		//Get the card layout from the main panel
+		CardLayout card = (CardLayout)mainContentPanel.getLayout();
 		
+		//Move to the next card in the card layout
+		card.next(mainContentPanel);
 	}
 	
 	//this is the first Card that is in the mainContentPanel
@@ -102,7 +111,10 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		buttonsPanel.setLayout(new GridLayout(1, 2));
 		
 		backButton = createButton("Back");
+		backButton.addActionListener(this);
 		nextButton = createButton("Next");
+		nextButton.addActionListener(this);
+
 		
 		buttonsPanel.add(backButton);
 		buttonsPanel.add(nextButton);
@@ -111,6 +123,77 @@ public class CinemaBooking extends JFrame implements ActionListener{
 
 		panel.add(buttonsPanel, BorderLayout.SOUTH);
 
+		//Returns the completed panel
+		return panel;
+		
+	}
+	
+	//second card
+	public JPanel buildCardPanel2() {
+		
+		JPanel panel = null;
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		panel.setBackground(new Color(107, 106, 104));
+		
+		JLabel card1Label = new JLabel();
+		card1Label.setText("Card 2");
+		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
+		card1Label.setForeground(Color.WHITE);
+		card1Label.setHorizontalAlignment(JLabel.CENTER);
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new GridLayout(1, 2));
+		
+		backButton = createButton("Back");
+		backButton.addActionListener(this);
+		nextButton = createButton("Next");
+		nextButton.addActionListener(this);
+
+		
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(nextButton);
+		
+		panel.add(card1Label, BorderLayout.NORTH);
+
+		panel.add(buttonsPanel, BorderLayout.SOUTH);
+		
+		//Returns the completed panel
+		return panel;
+		
+	}
+	
+	public JPanel buildCardPanel3() {
+		
+		JPanel panel = null;
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		panel.setBackground(new Color(107, 106, 104));
+		
+		JLabel card1Label = new JLabel();
+		card1Label.setText("Card 3");
+		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
+		card1Label.setForeground(Color.WHITE);
+		card1Label.setHorizontalAlignment(JLabel.CENTER);
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new GridLayout(1, 2));
+		
+		backButton = createButton("Back");
+		backButton.addActionListener(this);
+		nextButton = createButton("Next");
+		nextButton.addActionListener(this);
+
+		
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(nextButton);
+		
+		panel.add(card1Label, BorderLayout.NORTH);
+
+		panel.add(buttonsPanel, BorderLayout.SOUTH);
+		
 		//Returns the completed panel
 		return panel;
 		
@@ -127,6 +210,8 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		  button.setBorder(compound);
 		  return button;
 	}
+	
+
 	
 	public static JPanel createBlankPanel(String text){
 		JPanel panel = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
