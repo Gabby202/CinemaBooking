@@ -1,4 +1,9 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -27,19 +32,14 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		titlePanel.setBackground(new Color(107, 106, 104));
 		titlePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-		JPanel beginBookingPanel = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
+		JPanel beginBookingPanel = new JPanel(); 
+		JPanel nextBackButtons = new JPanel();
+		nextBackButtons.setLayout(new GridLayout(1, 2));
+
 		beginBookingPanel.setBackground(new Color(107, 106, 104));
+		beginBookingPanel.setLayout(new GridLayout(2, 1));
 
 		
-		JPanel blankPanel1 = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
-		blankPanel1.setBackground(new Color(107, 106, 104));
-
-		JPanel blankPanel2 = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
-		blankPanel2.setBackground(new Color(107, 106, 104));
-		
-		JPanel blankPanel3 = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
-		blankPanel3.setBackground(new Color(107, 106, 104));
-
 
 		// Labels ===================================================
 		JLabel title = new JLabel("Welcome To Movies@Blanchardstown");
@@ -50,25 +50,34 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		leftColTitle.setFont(new Font("Candara", Font.ITALIC, 24));
 		leftColTitle.setForeground(Color.WHITE);
 		
-		JLabel beginBookingLabel = new JLabel("Click here to begin booking!");
-		beginBookingLabel.setFont(new Font("Candara", Font.BOLD, 24));
+		JLabel beginBookingLabel = new JLabel("Click Next to begin booking!");
+		beginBookingLabel.setFont(new Font("Candara", Font.PLAIN, 24));
 		beginBookingLabel.setForeground(Color.WHITE);
+		beginBookingLabel.setHorizontalAlignment(JLabel.CENTER);
+	
+		
 		
 		// Add Components ============================================
-		containerPanel.add(leftColNav, BorderLayout.WEST); 
-		containerPanel.add(mainContentPanel);
+	
 		
 		titlePanel.add(title);
 		leftColNav.add(leftColTitle);
+		nextBackButtons.add(createButton("Back"));
+		nextBackButtons.add(createButton("Next"));
+
 		
 		beginBookingPanel.add(beginBookingLabel);
+		beginBookingPanel.add(nextBackButtons);
 		
-		mainContentPanel.add(titlePanel);
-		mainContentPanel.add(blankPanel1);
-		mainContentPanel.add(blankPanel2);
-		mainContentPanel.add(blankPanel3);
+		mainContentPanel.add(createBlankPanel(""));
+		mainContentPanel.add(createBlankPanel(""));
+		mainContentPanel.add(createBlankPanel(""));
+		mainContentPanel.add(createBlankPanel(""));
 		mainContentPanel.add(beginBookingPanel);
-
+		
+		containerPanel.add(titlePanel, BorderLayout.NORTH); 
+		containerPanel.add(leftColNav, BorderLayout.WEST); 
+		containerPanel.add(mainContentPanel);
 		
 		c.add(containerPanel);
 		setSize(1024, 720);
@@ -81,6 +90,24 @@ public class CinemaBooking extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		
 	}
+	
+	public static JButton createButton(String text) {
+		  JButton button = new JButton(text);
+		  button.setForeground(Color.WHITE);
+		  button.setBackground(new Color(107, 106, 104));
+		  Border line = new LineBorder(Color.GRAY);
+		  Border margin = new EmptyBorder(5, 15, 5, 15);
+		  Border compound = new CompoundBorder(line, margin);
+		  button.setBorder(compound);
+		  return button;
+	}
+	
+	public static JPanel createBlankPanel(String text){
+		JPanel panel = new JPanel(); //this is to take up the a row of the grid in mainContentPanel
+		panel.setBackground(new Color(107, 106, 104));
+		return panel;	
+	}
+	
 
 	public static void main(String[] args) {
 		new CinemaBooking();
