@@ -10,9 +10,9 @@ import java.awt.event.*;
 public class CinemaBooking extends JFrame implements ActionListener{
 	
 	JPanel mainContentPanel = new JPanel();
-	JPanel cardPanel1 = buildCardPanel1();
-	JPanel cardPanel2 = buildCardPanel2();
-	JPanel cardPanel3 = buildCardPanel3();
+	JPanel cardPanel1 = buildCardPanel(1);
+	JPanel cardPanel2 = buildCardPanel(2);
+	JPanel cardPanel3 = buildCardPanel(3);
 
 	JPanel buttonsPanel;
 	JButton nextButton;
@@ -93,7 +93,7 @@ public class CinemaBooking extends JFrame implements ActionListener{
 	}
 	
 	//this is the first Card that is in the mainContentPanel
-	public JPanel buildCardPanel1() {
+	public JPanel buildCardPanel(int panelNumber) {
 		
 		JPanel panel = null;
 		panel = new JPanel();
@@ -102,7 +102,7 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		panel.setBackground(new Color(107, 106, 104));
 		
 		JLabel card1Label = new JLabel();
-		card1Label.setText("Card 1");
+		card1Label.setText("Card " + panelNumber);
 		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
 		card1Label.setForeground(Color.WHITE);
 		card1Label.setHorizontalAlignment(JLabel.CENTER);
@@ -123,77 +123,6 @@ public class CinemaBooking extends JFrame implements ActionListener{
 
 		panel.add(buttonsPanel, BorderLayout.SOUTH);
 
-		//Returns the completed panel
-		return panel;
-		
-	}
-	
-	//second card
-	public JPanel buildCardPanel2() {
-		
-		JPanel panel = null;
-		panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		panel.setBackground(new Color(107, 106, 104));
-		
-		JLabel card1Label = new JLabel();
-		card1Label.setText("Card 2");
-		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
-		card1Label.setForeground(Color.WHITE);
-		card1Label.setHorizontalAlignment(JLabel.CENTER);
-		
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(1, 2));
-		
-		backButton = createButton("Back");
-		backButton.addActionListener(this);
-		nextButton = createButton("Next");
-		nextButton.addActionListener(this);
-
-		
-		buttonsPanel.add(backButton);
-		buttonsPanel.add(nextButton);
-		
-		panel.add(card1Label, BorderLayout.NORTH);
-
-		panel.add(buttonsPanel, BorderLayout.SOUTH);
-		
-		//Returns the completed panel
-		return panel;
-		
-	}
-	
-	public JPanel buildCardPanel3() {
-		
-		JPanel panel = null;
-		panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		panel.setBackground(new Color(107, 106, 104));
-		
-		JLabel card1Label = new JLabel();
-		card1Label.setText("Card 3");
-		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
-		card1Label.setForeground(Color.WHITE);
-		card1Label.setHorizontalAlignment(JLabel.CENTER);
-		
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new GridLayout(1, 2));
-		
-		backButton = createButton("Back");
-		backButton.addActionListener(this);
-		nextButton = createButton("Next");
-		nextButton.addActionListener(this);
-
-		
-		buttonsPanel.add(backButton);
-		buttonsPanel.add(nextButton);
-		
-		panel.add(card1Label, BorderLayout.NORTH);
-
-		panel.add(buttonsPanel, BorderLayout.SOUTH);
-		
 		//Returns the completed panel
 		return panel;
 		
