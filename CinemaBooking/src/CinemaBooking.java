@@ -9,19 +9,27 @@ import java.awt.event.*;
 
 public class CinemaBooking extends JFrame implements ActionListener{
 	
+	JPanel mainContentPanel = new JPanel();
+	JPanel cardPanel = buildCardPanel1();
+	JPanel buttonsPanel;
+	JButton nextButton;
+	JButton backButton;
+	
+	
 	public CinemaBooking(){
 		
 		Container c = getContentPane();
+		
+		
 		
 		
 		// Panels ===================================================
 		JPanel containerPanel = new JPanel();
 		containerPanel.setLayout(new BorderLayout()); //container Panel to allow positioning of leftColNav to the left of frame
 		
-		JPanel mainContentPanel = new JPanel(); //panel that will house main content of pages
-		mainContentPanel.setLayout(new GridLayout(5, 1));
-		mainContentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		mainContentPanel.setBackground(new Color(107, 106, 104));
+		mainContentPanel = new JPanel(); //panel that will house main content of pages
+		mainContentPanel.setLayout(new CardLayout());
+
 		
 		JPanel leftColNav = new JPanel(); //panel at the left of the frame for navigation
 		leftColNav.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -32,13 +40,9 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		titlePanel.setBackground(new Color(107, 106, 104));
 		titlePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-		JPanel beginBookingPanel = new JPanel(); 
-		JPanel nextBackButtons = new JPanel();
-		nextBackButtons.setLayout(new GridLayout(1, 2));
-
-		beginBookingPanel.setBackground(new Color(107, 106, 104));
-		beginBookingPanel.setLayout(new GridLayout(2, 1));
-
+		
+	
+	
 		
 
 		// Labels ===================================================
@@ -50,11 +54,6 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		leftColTitle.setFont(new Font("Candara", Font.ITALIC, 24));
 		leftColTitle.setForeground(Color.WHITE);
 		
-		JLabel beginBookingLabel = new JLabel("Click Next to begin booking!");
-		beginBookingLabel.setFont(new Font("Candara", Font.PLAIN, 24));
-		beginBookingLabel.setForeground(Color.WHITE);
-		beginBookingLabel.setHorizontalAlignment(JLabel.CENTER);
-	
 		
 		
 		// Add Components ============================================
@@ -62,18 +61,11 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		
 		titlePanel.add(title);
 		leftColNav.add(leftColTitle);
-		nextBackButtons.add(createButton("Back"));
-		nextBackButtons.add(createButton("Next"));
 
 		
-		beginBookingPanel.add(beginBookingLabel);
-		beginBookingPanel.add(nextBackButtons);
+
 		
-		mainContentPanel.add(createBlankPanel(""));
-		mainContentPanel.add(createBlankPanel(""));
-		mainContentPanel.add(createBlankPanel(""));
-		mainContentPanel.add(createBlankPanel(""));
-		mainContentPanel.add(beginBookingPanel);
+		mainContentPanel.add(cardPanel);
 		
 		containerPanel.add(titlePanel, BorderLayout.NORTH); 
 		containerPanel.add(leftColNav, BorderLayout.WEST); 
@@ -88,6 +80,40 @@ public class CinemaBooking extends JFrame implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e){
+		
+	}
+	
+	public JPanel buildCardPanel1() {
+		
+		JPanel panel = null;
+		panel = new JPanel();
+		panel.setLayout(new GridLayout(5,1));
+		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		panel.setBackground(new Color(107, 106, 104));
+		
+		JLabel card1Label = new JLabel();
+		card1Label.setText("Card 1");
+		card1Label.setFont(new Font("Candara", Font.ITALIC, 24));
+		card1Label.setForeground(Color.WHITE);
+		card1Label.setHorizontalAlignment(JLabel.CENTER);
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new GridLayout(1, 2));
+		
+		backButton = createButton("Back");
+		nextButton = createButton("Next");
+		
+		buttonsPanel.add(backButton);
+		buttonsPanel.add(nextButton);
+		
+		panel.add(card1Label);
+		panel.add(createBlankPanel(""));
+		panel.add(createBlankPanel(""));
+		panel.add(createBlankPanel(""));
+		panel.add(buttonsPanel);
+
+		//Returns the completed panel
+		return panel;
 		
 	}
 	
