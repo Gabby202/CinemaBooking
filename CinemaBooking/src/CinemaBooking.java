@@ -83,11 +83,12 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		
 	}
 	
+	//this is the first Card that is in the mainContentPanel
 	public JPanel buildCardPanel1() {
 		
 		JPanel panel = null;
 		panel = new JPanel();
-		panel.setLayout(new GridLayout(5,1));
+		panel.setLayout(new BorderLayout());
 		panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 		panel.setBackground(new Color(107, 106, 104));
 		
@@ -106,17 +107,16 @@ public class CinemaBooking extends JFrame implements ActionListener{
 		buttonsPanel.add(backButton);
 		buttonsPanel.add(nextButton);
 		
-		panel.add(card1Label);
-		panel.add(createBlankPanel(""));
-		panel.add(createBlankPanel(""));
-		panel.add(createBlankPanel(""));
-		panel.add(buttonsPanel);
+		panel.add(card1Label, BorderLayout.NORTH);
+
+		panel.add(buttonsPanel, BorderLayout.SOUTH);
 
 		//Returns the completed panel
 		return panel;
 		
 	}
 	
+	//this just creates a nicer looking button
 	public static JButton createButton(String text) {
 		  JButton button = new JButton(text);
 		  button.setForeground(Color.WHITE);
