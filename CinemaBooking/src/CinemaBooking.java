@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -19,7 +22,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class CinemaBooking extends JFrame implements ActionListener {
+public class CinemaBooking extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
 	JPanel mainContentPanel = new JPanel();
 	JPanel cardPanel1 = buildCardPanel(1);
@@ -29,6 +32,10 @@ public class CinemaBooking extends JFrame implements ActionListener {
 	JPanel buttonsPanel;
 	JButton nextButton;
 	JButton backButton;
+
+	// movie list method arrays made global to give mouse listener methods scope
+	JPanel moviePanel[];
+	JLabel movieLabel[];
 
 	public CinemaBooking() {
 
@@ -94,8 +101,13 @@ public class CinemaBooking extends JFrame implements ActionListener {
 																		// the
 																		// main
 																		// panel
-
-		card.next(mainContentPanel);// Move to the next card in the card layout
+		card.previous(mainContentPanel);
+		if(e.getSource() == "next"){
+			card.next(mainContentPanel);// Move to the next card in the card layout
+		}
+		if(e.getSource() == "back"){
+			card.previous(mainContentPanel);
+		}
 	}
 
 	// this is the first Card that is in the mainContentPanel
@@ -124,6 +136,7 @@ public class CinemaBooking extends JFrame implements ActionListener {
 		// changes method depending on which panel
 		if (panelNumber == 1) {
 			panel.add(movieList());
+			card1Label.setText("Select Your Movie");
 		}
 
 		buttonsPanel.add(backButton);
@@ -138,28 +151,26 @@ public class CinemaBooking extends JFrame implements ActionListener {
 
 	}
 
-	public static JPanel movieList() {
-		
+	// method for showing list of movies
+	public JPanel movieList() {
+
 		JPanel movieList = new JPanel();
-		movieList.setLayout(new GridLayout(4,1));
-		JPanel[] moviePanel = new JPanel[4];
-		JLabel[] movieLabel = new JLabel[4];
+		movieList.setLayout(new GridLayout(4, 1));
+		moviePanel = new JPanel[4];
+		movieLabel = new JLabel[4];
 		movieList.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-		
-	
-		for(int i = 0; i< 4; i++){
+		for (int i = 0; i < 4; i++) {
 			moviePanel[i] = new JPanel();
 			movieLabel[i] = new JLabel();
-			movieLabel[i].setText("Movie " + (i+1));
+			movieLabel[i].setText("Movie " + (i + 1));
 			movieLabel[i].setForeground(Color.WHITE);
 			moviePanel[i].add(movieLabel[i]);
 			movieList.add(moviePanel[i]);
 			moviePanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			moviePanel[i].setBackground(new Color(107, 106, 104));
-
+			moviePanel[i].addMouseListener(this);
 		}
-		
 
 		return movieList;
 	}
@@ -179,12 +190,82 @@ public class CinemaBooking extends JFrame implements ActionListener {
 	public static JPanel createBlankPanel(String text) {
 		JPanel panel = new JPanel(); // this is to take up the a row of the grid
 										// in mainContentPanel
-		panel.setBackground(new Color(107, 106, 104));
+		;
 		return panel;
 	}
 
 	public static void main(String[] args) {
 		new CinemaBooking();
 	}// end main
+
+	// Mouse Listeners
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// change background color of selected panel in movie list
+		if (e.getSource() == moviePanel[0]) {
+			moviePanel[0].setBackground(new Color(148, 146, 143));
+		}else{
+			moviePanel[0].setBackground(new Color(107, 106, 104));
+		}
+		
+		if(e.getSource() == moviePanel[1]){
+			moviePanel[1].setBackground(new Color(148, 146, 143));
+		}else{
+			moviePanel[1].setBackground(new Color(107, 106, 104));
+		}
+		
+		if (e.getSource() == moviePanel[2]) {
+			moviePanel[2].setBackground(new Color(148, 146, 143));
+		}else{
+			moviePanel[2].setBackground(new Color(107, 106, 104));
+		}
+		
+		if(e.getSource() == moviePanel[3]){
+			moviePanel[3].setBackground(new Color(148, 146, 143));
+		}else{
+			moviePanel[3].setBackground(new Color(107, 106, 104));
+		}
+		
+		
+			
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 
 }// end class
