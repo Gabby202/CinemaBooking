@@ -10,13 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -36,6 +38,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	// movie list method arrays made global to give mouse listener methods scope
 	JPanel moviePanel[];
 	JLabel movieLabel[];
+	Icon movieImage[];
+
 
 	public CinemaBooking() {
 
@@ -101,13 +105,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 																		// the
 																		// main
 																		// panel
-		card.previous(mainContentPanel);
-		if(e.getSource() == "next"){
-			card.next(mainContentPanel);// Move to the next card in the card layout
-		}
-		if(e.getSource() == "back"){
-			card.previous(mainContentPanel);
-		}
+		card.next(mainContentPanel);// Move to the next card in the card layout
+		
+		
 	}
 
 	// this is the first Card that is in the mainContentPanel
@@ -158,19 +158,34 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		movieList.setLayout(new GridLayout(4, 1));
 		moviePanel = new JPanel[4];
 		movieLabel = new JLabel[4];
+		movieImage = new ImageIcon[4];
+		JPanel spacePanel[] = new JPanel[4];
 		movieList.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		
+		movieImage[0] = new ImageIcon("src/images/the_hobbit1.jpg");
+		movieImage[1] = new ImageIcon("src/images/captain_america1.jpg");
+		movieImage[2] = new ImageIcon("src/images/hunger_games1.jpg");
+		movieImage[3] = new ImageIcon("src/images/star_wars1.jpg");
 
+		
 		for (int i = 0; i < 4; i++) {
 			moviePanel[i] = new JPanel();
-			movieLabel[i] = new JLabel();
-			movieLabel[i].setText("Movie " + (i + 1));
-			movieLabel[i].setForeground(Color.WHITE);
-			moviePanel[i].add(movieLabel[i]);
+			movieLabel[i] = new JLabel(movieImage[i]);
+			spacePanel[i] = new JPanel();	
+			movieLabel[i].setHorizontalAlignment(JLabel.LEFT);
+			moviePanel[i].setLayout(new BorderLayout());
+			spacePanel[i].setPreferredSize(new Dimension(30, 0));
+			moviePanel[i].add(spacePanel[i], BorderLayout.WEST);
+			moviePanel[i].add(movieLabel[i], BorderLayout.CENTER);
+			
 			movieList.add(moviePanel[i]);
+			spacePanel[i].setBackground(new Color(107, 106, 104));
 			moviePanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			moviePanel[i].setBackground(new Color(107, 106, 104));
 			moviePanel[i].addMouseListener(this);
 		}
+		
+		
 
 		return movieList;
 	}
