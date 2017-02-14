@@ -1,10 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -136,6 +139,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		if (panelNumber == 1) {
 			panel.add(movieList());
 			card1Label.setText("Select Your Movie");
+		} else if (panelNumber == 3) {
+			panel.add(seatMap());
+			card1Label.setText("Select Your Seat");
 		}
 
 		buttonsPanel.add(backButton);
@@ -204,6 +210,34 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		}
 		
 		return movieList;
+	}
+	
+	//this is the page to show the time selection list 
+	public JPanel seatMap() {
+		JPanel seatMap = new JPanel();
+		seatMap.setLayout(new BorderLayout());
+		
+		JPanel[] paddingPanel = new JPanel[4];
+		JPanel container = new JPanel(); //the panel with seats, padded from edges
+		for(int i = 0; i<4; i++){
+			paddingPanel[i] = new JPanel();
+			//paddingPanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			paddingPanel[i].setBackground(new Color(107, 106, 104));
+		}
+		
+		paddingPanel[0].setPreferredSize(new Dimension(40, 720));
+		paddingPanel[1].setPreferredSize(new Dimension(1024, 40));
+		paddingPanel[2].setPreferredSize(new Dimension(40, 720));
+		paddingPanel[3].setPreferredSize(new Dimension(1024, 40)); //these dont change the size for some reason
+		
+
+		
+		seatMap.add(paddingPanel[0], BorderLayout.WEST);
+		seatMap.add(paddingPanel[1], BorderLayout.NORTH);
+		seatMap.add(paddingPanel[2], BorderLayout.EAST);
+		seatMap.add(paddingPanel[3], BorderLayout.SOUTH);
+		seatMap.add(container, BorderLayout.CENTER);
+		return seatMap; 
 	}
 
 	// this just creates a nicer looking button
