@@ -1,13 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -38,10 +35,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	JButton backButton;
 
 	// movie list method arrays made global to give mouse listener methods scope
-	JPanel moviePanel[], spacePanel[], descriptionPanel[];
+	JPanel moviePanel[], spacePanel[], descriptionPanel[], seat[];
 	JLabel movieLabel[], movieDescription[];
 	Icon movieImage[];
-
+	boolean pressed[];
 
 	public CinemaBooking() {
 
@@ -108,8 +105,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 																		// main
 																		// panel
 		card.next(mainContentPanel);// Move to the next card in the card layout
-		
-		
+
 	}
 
 	// this is the first Card that is in the mainContentPanel
@@ -168,24 +164,23 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		descriptionPanel = new JPanel[4];
 		movieDescription = new JLabel[4];
 		movieList.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-		
+
 		movieImage[0] = new ImageIcon("images/the_hobbit1.jpg");
 		movieImage[1] = new ImageIcon("images/captain_america1.jpg");
 		movieImage[2] = new ImageIcon("images/hunger_games1.jpg");
 		movieImage[3] = new ImageIcon("images/star_wars1.jpg");
-		
+
 		movieDescription[0] = new JLabel("The Hobbit: The Desolation Of Smaug");
 		movieDescription[1] = new JLabel("Captain America: Civil War");
 		movieDescription[2] = new JLabel("The Hunger Games: Mockingjay");
 		movieDescription[3] = new JLabel("Star Wars: The Force Awakens");
-		
 
 		for (int i = 0; i < 4; i++) {
 			moviePanel[i] = new JPanel();
 			movieLabel[i] = new JLabel(movieImage[i]);
-			spacePanel[i] = new JPanel();	
+			spacePanel[i] = new JPanel();
 			descriptionPanel[i] = new JPanel();
-			
+
 			movieLabel[i].setHorizontalAlignment(JLabel.LEFT);
 			moviePanel[i].setLayout(new BorderLayout());
 			spacePanel[i].setPreferredSize(new Dimension(68, 0));
@@ -194,7 +189,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			descriptionPanel[i].setBackground(new Color(107, 106, 104));
 			movieDescription[i].setForeground(Color.WHITE);
 			movieDescription[i].setFont(new Font("Candara", Font.BOLD, 24));
-		
+
 			movieList.add(moviePanel[i]);
 			spacePanel[i].setBackground(new Color(107, 106, 104));
 			moviePanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -205,39 +200,71 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 			moviePanel[i].add(spacePanel[i], BorderLayout.WEST);
 			moviePanel[i].add(movieLabel[i], BorderLayout.CENTER);
-			moviePanel[i]. add(descriptionPanel[i], BorderLayout.EAST);
-			
+			moviePanel[i].add(descriptionPanel[i], BorderLayout.EAST);
+
 		}
-		
+
 		return movieList;
 	}
-	
-	//this is the page to show the time selection list 
+
+	// this is the page to show the time selection list
 	public JPanel seatMap() {
 		JPanel seatMap = new JPanel();
 		seatMap.setLayout(new BorderLayout());
-		
-		JPanel[] paddingPanel = new JPanel[4];
-		JPanel container = new JPanel(); //the panel with seats, padded from edges
-		for(int i = 0; i<4; i++){
-			paddingPanel[i] = new JPanel();
-			//paddingPanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-			paddingPanel[i].setBackground(new Color(107, 106, 104));
-		}
-		
-		paddingPanel[0].setPreferredSize(new Dimension(40, 720));
-		paddingPanel[1].setPreferredSize(new Dimension(1024, 40));
-		paddingPanel[2].setPreferredSize(new Dimension(40, 720));
-		paddingPanel[3].setPreferredSize(new Dimension(1024, 40)); //these dont change the size for some reason
-		
+		seat = new JPanel[100];
 
-		
+		JPanel[] paddingPanel = new JPanel[4];
+		JPanel container = new JPanel(); // the panel with seats, padded from
+											// edges
+		for (int i = 0; i < 4; i++) {
+			paddingPanel[i] = new JPanel();
+			// paddingPanel[i].setBorder(BorderFactory.createLineBorder(Color.GRAY,
+			// 1));
+			paddingPanel[i].setBackground(new Color(97, 96, 94));
+		}
+
+		container.setLayout(new GridLayout(10, 10));
+
+		// create seats
+
+		for (int s = 0; s < 100; s++) {
+			seat[s] = new JPanel();
+
+			// hides seats that are supposed to be walking paths
+			if (s >= 70 && s <= 79) {
+				seat[s].setBackground(new Color(97, 96, 94));
+			}
+
+			else if (s >= 20 && s <= 29) {
+				seat[s].setBackground(new Color(97, 96, 94));
+			}
+
+			else if (s == 22 || s == 32 || s == 42 || s == 52 || s == 62) {
+				seat[s].setBackground(new Color(97, 96, 94));
+			}
+
+			else if (s == 27 || s == 37 || s == 47 || s == 57 || s == 67) {
+				seat[s].setBackground(new Color(97, 96, 94));
+			} else {
+				seat[s].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+				seat[s].setBackground(new Color(117, 116, 114));
+				seat[s].addMouseListener(this);
+			}
+
+			container.add(seat[s]);
+		}
+
+		paddingPanel[0].setPreferredSize(new Dimension(80, 720));
+		paddingPanel[1].setPreferredSize(new Dimension(1024, 80));
+		paddingPanel[2].setPreferredSize(new Dimension(80, 720));
+		paddingPanel[3].setPreferredSize(new Dimension(1024, 80));
+
 		seatMap.add(paddingPanel[0], BorderLayout.WEST);
 		seatMap.add(paddingPanel[1], BorderLayout.NORTH);
 		seatMap.add(paddingPanel[2], BorderLayout.EAST);
 		seatMap.add(paddingPanel[3], BorderLayout.SOUTH);
 		seatMap.add(container, BorderLayout.CENTER);
-		return seatMap; 
+		return seatMap;
 	}
 
 	// this just creates a nicer looking button
@@ -273,68 +300,82 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			spacePanel[0].setBackground(new Color(148, 146, 143));
 			descriptionPanel[0].setBackground(new Color(148, 146, 143));
 
-
-		}else{
+		} else {
 			moviePanel[0].setBackground(new Color(107, 106, 104));
 			spacePanel[0].setBackground(new Color(107, 106, 104));
 			descriptionPanel[0].setBackground(new Color(107, 106, 104));
 
 		}
-		
-		if(e.getSource() == moviePanel[1]){
+
+		if (e.getSource() == moviePanel[1]) {
 			moviePanel[1].setBackground(new Color(148, 146, 143));
 			spacePanel[1].setBackground(new Color(148, 146, 143));
 			descriptionPanel[1].setBackground(new Color(148, 146, 143));
 
-		}else{
+		} else {
 			moviePanel[1].setBackground(new Color(107, 106, 104));
 			spacePanel[1].setBackground(new Color(107, 106, 104));
 			descriptionPanel[1].setBackground(new Color(107, 106, 104));
 		}
-		
+
 		if (e.getSource() == moviePanel[2]) {
 			moviePanel[2].setBackground(new Color(148, 146, 143));
 			spacePanel[2].setBackground(new Color(148, 146, 143));
 			descriptionPanel[2].setBackground(new Color(148, 146, 143));
 
-		}else{
+		} else {
 			moviePanel[2].setBackground(new Color(107, 106, 104));
 			spacePanel[2].setBackground(new Color(107, 106, 104));
 			descriptionPanel[2].setBackground(new Color(107, 106, 104));
 
 		}
-		
-		if(e.getSource() == moviePanel[3]){
+
+		if (e.getSource() == moviePanel[3]) {
 			moviePanel[3].setBackground(new Color(148, 146, 143));
 			spacePanel[3].setBackground(new Color(148, 146, 143));
 			descriptionPanel[3].setBackground(new Color(148, 146, 143));
 
-		}else{
+		} else {
 			moviePanel[3].setBackground(new Color(107, 106, 104));
 			spacePanel[3].setBackground(new Color(107, 106, 104));
 			descriptionPanel[3].setBackground(new Color(107, 106, 104));
 		}
-		
-		
-			
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		
+		for (int i = 0; i < 100; i++) {
+			if (e.getSource() == seat[i]) {
+				seat[i].setBackground(new Color(137, 136, 134));
+			}
+		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		pressed = new boolean[100];
+		for (int i = 0; i < 100; i++) {
+			if (e.getSource() == seat[i] && pressed[i] == false) {
+				seat[i].setBackground(new Color(117, 116, 114));
+			} 
+			
+		}
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		pressed = new boolean[100];
+		
+		for (int i = 0; i < 100; i++) {
+			if (e.getSource() == seat[i]) {
+				seat[i].setBackground(new Color(137, 136, 134));				
+				System.out.println("pressed at index " + i);
+				pressed[i] = true; //use this to keep the box highlighted
+			}
+		}
 
 	}
 
