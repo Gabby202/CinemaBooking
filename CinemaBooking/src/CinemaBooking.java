@@ -163,10 +163,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		movieDescription = new JLabel[4];
 		movieList.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 		
-		movieImage[0] = new ImageIcon("src/images/the_hobbit1.jpg");
-		movieImage[1] = new ImageIcon("src/images/captain_america1.jpg");
-		movieImage[2] = new ImageIcon("src/images/hunger_games1.jpg");
-		movieImage[3] = new ImageIcon("src/images/star_wars1.jpg");
+		movieImage[0] = new ImageIcon("images/the_hobbit1.jpg");
+		movieImage[1] = new ImageIcon("images/captain_america1.jpg");
+		movieImage[2] = new ImageIcon("images/hunger_games1.jpg");
+		movieImage[3] = new ImageIcon("images/star_wars1.jpg");
 		
 		movieDescription[0] = new JLabel("The Hobbit: The Desolation Of Smaug");
 		movieDescription[1] = new JLabel("Captain America: Civil War");
