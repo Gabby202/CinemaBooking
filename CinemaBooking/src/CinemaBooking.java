@@ -42,17 +42,17 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	public CinemaBooking() {
 
-		// LoginRegsiter Class Called
-		LoginRegister login = new LoginRegister();
-		// while to to keep looping till a login,register or guest entry is
-		// granted
-		boolean loginComplete = false;
-		while (loginComplete == false) {
-			//to end process when close button is pressed
-			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			loginComplete = login.run();
-			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		}
+//		// LoginRegsiter Class Called
+//		LoginRegister login = new LoginRegister();
+//		// while to to keep looping till a login,register or guest entry is
+//		// granted
+//		boolean loginComplete = false;
+//		while (loginComplete == false) {
+//			//to end process when close button is pressed
+//			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//			loginComplete = login.run();
+//			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		}
 		
 		Container c = getContentPane();
 
