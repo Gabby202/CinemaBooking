@@ -42,6 +42,18 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	public CinemaBooking() {
 
+		// LoginRegsiter Class Called
+		LoginRegister login = new LoginRegister();
+		// while to to keep looping till a login,register or guest entry is
+		// granted
+		boolean loginComplete = false;
+		while (loginComplete == false) {
+			//to end process when close button is pressed
+			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			loginComplete = login.run();
+			login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
+		
 		Container c = getContentPane();
 
 		// Panels ===================================================
@@ -287,7 +299,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	}
 
 	public static void main(String[] args) {
-		new CinemaBooking();
+		CinemaBooking frame = new CinemaBooking();
+		//to terminate program when close button pressed
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}// end main
 
 	// Mouse Listeners
@@ -345,7 +359,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		
+
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
 				seat[i].setBackground(new Color(137, 136, 134));
@@ -359,8 +373,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i] && pressed[i] == false) {
 				seat[i].setBackground(new Color(117, 116, 114));
-			} 
-			
+			}
+
 		}
 
 	}
@@ -368,12 +382,12 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	@Override
 	public void mousePressed(MouseEvent e) {
 		pressed = new boolean[100];
-		
+
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
-				seat[i].setBackground(new Color(137, 136, 134));				
+				seat[i].setBackground(new Color(137, 136, 134));
 				System.out.println("pressed at index " + i);
-				pressed[i] = true; //use this to keep the box highlighted
+				pressed[i] = true; // use this to keep the box highlighted
 			}
 		}
 
