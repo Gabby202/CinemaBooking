@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -38,7 +39,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	JPanel moviePanel[], spacePanel[], descriptionPanel[], seat[];
 	JLabel movieLabel[], movieDescription[];
 	Icon movieImage[];
-	boolean pressed[];
+	boolean[] pressed;
+	
 
 	public CinemaBooking() {
 
@@ -212,6 +214,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		JPanel seatMap = new JPanel();
 		seatMap.setLayout(new BorderLayout());
 		seat = new JPanel[100];
+		
 
 		JPanel[] paddingPanel = new JPanel[4];
 		JPanel container = new JPanel(); // the panel with seats, padded from
@@ -250,6 +253,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 				seat[s].setBackground(new Color(117, 116, 114));
 				seat[s].addMouseListener(this);
 			}
+			
+			
 
 			container.add(seat[s]);
 		}
@@ -348,7 +353,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
-				seat[i].setBackground(new Color(137, 136, 134));
+			
+				
+				//	seat[i].setBackground(new Color(137, 136, 134));
 			}
 		}
 	}
@@ -356,24 +363,29 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	@Override
 	public void mouseExited(MouseEvent e) {
 		pressed = new boolean[100];
-		for (int i = 0; i < 100; i++) {
-			if (e.getSource() == seat[i] && pressed[i] == false) {
+	/*	for (int i = 0; i < 100; i++) {
+			if (e.getSource() == seat[i]) {
 				seat[i].setBackground(new Color(117, 116, 114));
 			} 
 			
-		}
+		}*/
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		pressed = new boolean[100];
+		Arrays.fill(pressed, false);
 		
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
+				pressed[i] = true;
+				System.out.println("pressed at index " + i + " " + pressed[i]);
+				
+			}
+			
+			if(pressed[i] == true) {
 				seat[i].setBackground(new Color(137, 136, 134));				
-				System.out.println("pressed at index " + i);
-				pressed[i] = true; //use this to keep the box highlighted
 			}
 		}
 
