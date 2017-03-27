@@ -24,6 +24,12 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+
+/**
+ * This class houses the gui and most of the functions
+ * @author Gabby
+ *
+ */
 public class CinemaBooking extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
 	JPanel mainContentPanel = new JPanel();
@@ -42,6 +48,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	boolean[] pressed;
 	
 
+	/**
+	 * Constructor for program
+	 */
 	public CinemaBooking() {
 
 		Container c = getContentPane();
@@ -98,6 +107,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	}// end constructor
 
+
 	public void actionPerformed(ActionEvent e) {
 		CardLayout card = (CardLayout) mainContentPanel.getLayout(); // Get the
 																		// card
@@ -153,7 +163,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		return panel;
 
 	}
-
+/**
+ * This creates the list of movies for selection
+ * @return JPanel panels to be used in cards
+ */
 	// method for showing list of movies
 	public JPanel movieList() {
 
@@ -208,7 +221,11 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 		return movieList;
 	}
-
+	
+/**
+ * This creates the seat map for the users to select from
+ * @return JPanel panel for card layout
+ */
 	// this is the page to show the time selection list
 	public JPanel seatMap() {
 		JPanel seatMap = new JPanel();
@@ -272,6 +289,11 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		return seatMap;
 	}
 
+	/**
+	 * 
+	 * @param text to choose which card to use
+	 * @return JPanel to display card
+	 */
 	// this just creates a nicer looking button
 	public static JButton createButton(String text) {
 		JButton button = new JButton(text);
@@ -283,7 +305,14 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		button.setBorder(compound);
 		return button;
 	}
-
+	
+	
+/**
+ * 
+ * @param text to choose which card to be displayed
+ * @param text to pass text into jbutton
+ * @return JPanel panel
+ */
 	public static JPanel createBlankPanel(String text) {
 		JPanel panel = new JPanel(); // this is to take up the a row of the grid
 										// in mainContentPanel
@@ -291,12 +320,18 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		return panel;
 	}
 
+	/**
+	 * main method
+	 * @param args main method
+	 */
 	public static void main(String[] args) {
 		new CinemaBooking();
 	}// end main
 
 	// Mouse Listeners
-
+/**
+ * mouseClicked event to selecrt seats and movies 
+ */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// change background color of selected panel in movie list
@@ -372,6 +407,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	}
 
+	/**
+	 * mouse pressed event for choosing movie and seat
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		pressed = new boolean[100];
