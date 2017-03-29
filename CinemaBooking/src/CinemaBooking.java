@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -36,6 +37,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	JPanel cardPanel1 = buildCardPanel(1);
 	JPanel cardPanel2 = buildCardPanel(2);
 	JPanel cardPanel3 = buildCardPanel(3);
+	JPanel cardPanel4 = buildCardPanel(4);
 
 	JPanel buttonsPanel;
 	JButton nextButton;
@@ -95,6 +97,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		mainContentPanel.add(cardPanel1);
 		mainContentPanel.add(cardPanel2);
 		mainContentPanel.add(cardPanel3);
+		mainContentPanel.add(cardPanel4);
 
 		containerPanel.add(titlePanel, BorderLayout.NORTH);
 		containerPanel.add(leftColNav, BorderLayout.WEST);
@@ -150,6 +153,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		} else if (panelNumber == 3) {
 			panel.add(seatMap());
 			card1Label.setText("Select Your Seat");
+		} else if (panelNumber == 4) {
+			panel.add(paymentInfo());
+			card1Label.setText("Payment Information");
 		}
 
 		buttonsPanel.add(backButton);
@@ -163,6 +169,136 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		return panel;
 
 	}
+	public JPanel paymentInfo() {
+		JPanel paymentInfo = new JPanel();
+		paymentInfo.setLayout(new GridLayout(1,1)); //makes the mainContent panel fill all the space
+		JPanel mainContent = new JPanel();
+		mainContent.setLayout(new GridLayout(6, 1));
+		
+		JLabel nameLabel = new JLabel("Name: ");
+		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setHorizontalAlignment(JLabel.LEFT);
+		JTextField nameField = new JTextField(16);
+		JLabel surnameLabel = new JLabel("Surname: ");
+		JTextField surNameField = new JTextField(16);
+		JTextField add1 = new JTextField(16);
+		JTextField add2 = new JTextField(16);
+		JTextField cardNo = new JTextField(16);
+		JTextField exp = new JTextField(16);
+
+		String stringLabels[] = {"Name", "Surname", "Address", "Address 2 ", "CardNo", "Cvv"};
+		JLabel labels[] = new JLabel[6];
+		
+		JPanel[] panels = new JPanel[6];
+		JPanel[] spacePanel = new JPanel[6];
+		JPanel[] labelPanel = new JPanel[6];
+		JPanel[] fieldPanel = new JPanel[6];
+		JPanel[] innerFieldPanels = new JPanel[12];
+		JTextField[] fields = new JTextField[12];
+		
+		fields[0] = new JTextField();
+		fields[1] = new JTextField();
+		fields[2] = new JTextField();
+		fields[3] = new JTextField();
+		fields[4] = new JTextField();
+		fields[5] = new JTextField();
+
+		fields[0].add(nameField);
+		fields[1].add(surNameField);
+		fields[2].add(add1);
+		fields[3].add(add2);
+		fields[4].add(cardNo);
+		fields[5].add(exp);
+		
+		for (int i = 0; i < panels.length; i++ ) {
+			panels[i] = new JPanel();
+			spacePanel[i] = new JPanel();
+			labelPanel[i] = new JPanel();
+			fieldPanel[i] = new JPanel();
+			panels[i].setLayout(new BorderLayout());
+			innerFieldPanels[i] = new JPanel();
+			
+			labels[i] = new JLabel();
+			labels[i].setText(stringLabels[i]);
+			
+			formatPanel(panels[i]);
+			formatPanel(spacePanel[i]);
+			formatPanel(labelPanel[i]);
+			formatPanel(fieldPanel[i]);
+			formatPanel(innerFieldPanels[i]);
+			
+			if(i > 0 && i < 5) {
+				labelPanel[i].setLayout(new GridLayout(2,1));
+				fieldPanel[i].setLayout(new GridLayout(2, 1));
+				labelPanel[i].setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 20));
+				labelPanel[i].setPreferredSize(new Dimension(20, 0));
+			}
+			
+			
+			labelPanel[i].setPreferredSize(new Dimension(20, 0));
+
+		
+			
+		//	spacePanel[i].setPreferredSize(new Dimension(68, 0));
+			fieldPanel[i].setPreferredSize(new Dimension(550, 0));
+			
+			fieldPanel[i].setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 200)); //moves components
+			
+		//	panels[i].add(spacePanel[i], BorderLayout.WEST);
+			panels[i].add(labelPanel[i], BorderLayout.CENTER);
+			panels[i].add(fieldPanel[i], BorderLayout.EAST);
+			mainContent.add(panels[i]);
+			
+			labels[i].setText(stringLabels[i]);
+			labels[i].setForeground(Color.WHITE);
+			
+			
+	
+		}
+		labelPanel[1].add(labels[0]);
+		labelPanel[1].add(labels[1]);
+		labelPanel[2].add(labels[2]);
+		labelPanel[2].add(labels[3]);
+		labelPanel[3].add(labels[4]);
+		labelPanel[3].add(labels[5]);
+		
+		fieldPanel[1].add(innerFieldPanels[0]);
+		fieldPanel[1].add(innerFieldPanels[1]);
+		fieldPanel[2].add(innerFieldPanels[2]);
+		fieldPanel[2].add(innerFieldPanels[3]);
+		fieldPanel[3].add(innerFieldPanels[4]);
+		fieldPanel[3].add(innerFieldPanels[5]);
+		
+		innerFieldPanels[0].add(nameField);
+		innerFieldPanels[1].add(surNameField);
+		innerFieldPanels[2].add(add1);
+		innerFieldPanels[3].add(add2);
+		innerFieldPanels[4].add(cardNo);
+		innerFieldPanels[5].add(exp);
+		
+		for(int x = 0; x < 6; x++) {
+			innerFieldPanels[x].setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 100));
+		}
+
+		
+		labelPanel[0].setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+		fieldPanel[0].setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 400));
+		
+		paymentInfo.add(mainContent);
+		mainContent.setBackground(new Color(107, 106, 104));
+		return paymentInfo;
+	}
+
+	public JPanel formatPanel(JPanel panel) {
+		
+		
+		panel.setBackground(new Color(107,106,104));
+		panel.setForeground(Color.WHITE);
+		//panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+		return panel;
+	}
+
 /**
  * This creates the list of movies for selection
  * @return JPanel panels to be used in cards
@@ -178,6 +314,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		spacePanel = new JPanel[4];
 		descriptionPanel = new JPanel[4];
 		movieDescription = new JLabel[4];
+		
 		movieList.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
 		movieImage[0] = new ImageIcon("images/the_hobbit1.jpg");

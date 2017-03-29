@@ -9,7 +9,7 @@ import javax.swing.Icon;
 
 class DBConnection {
 
-	// DB connection info
+/*	// DB connection info
 	private String DBUrl = "jdbc:mysql://localhost:3306/cinema_booking?useSSL=false";
 	private String DBUser = "root";
 	private String DBPass = "";
@@ -93,4 +93,6 @@ class DBConnection {
 		// Attempts to set the state of a selected seat
 		// i.e. take or not
 	}
+	
+	*/
 }
