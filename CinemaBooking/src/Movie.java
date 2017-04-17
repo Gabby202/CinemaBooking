@@ -25,7 +25,7 @@ public class Movie implements Serializable{
 	 * 
 	 * @param t Movie Title
 	 * @param i Movie Poster
-	 * @param d Movie Desp
+	 * @param d Movie Description
 	 */
 	Movie(String t, ImageIcon i, String d) {
 		title = t;
