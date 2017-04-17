@@ -535,7 +535,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		
 	}// end main
 
-	// Mouse Listeners
+	// Mouse Listeners - 
 	/**
 	 * mouseClicked event to selecrt seats and movies
 	 */
