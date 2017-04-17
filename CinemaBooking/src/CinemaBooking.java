@@ -1,7 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,6 +31,7 @@ import javax.swing.border.LineBorder;
  * @author Gabby
  *
  */
+@SuppressWarnings("serial")
 public class CinemaBooking extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
 	JPanel mainContentPanel = new JPanel();
@@ -124,8 +124,6 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 																		// panel
 		card.next(mainContentPanel);// Move to the next card in the card layout
 
-		
-
 	}
 
 	// this is the first Card that is in the mainContentPanel
@@ -149,9 +147,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		backButton = createButton("Back");
 		backButton.addActionListener(this);
 		nextButton = createButton("Next");
-	    nextButton.addActionListener(this);
+		nextButton.addActionListener(this);
 
-		
 		// changes method depending on which panel
 		if (panelNumber == 1) {
 			panel.add(home());
@@ -532,16 +529,15 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	 */
 	public static void main(String[] args) {
 		new CinemaBooking();
-		
+
 	}// end main
 
-	// Mouse Listeners - 
+	// Mouse Listeners -
 	/**
 	 * mouseClicked event to selecrt seats and movies
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 
 		// change background color of selected panel in movie list
 		if (e.getSource() == moviePanel[0]) {
@@ -605,7 +601,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			spacePanel[3].setBackground(new Color(148, 146, 143));
 			descriptionPanel[3].setBackground(new Color(148, 146, 143));
 			movieChoice.setText(movieLabel[3].getText());
-			
+
 			Arrays.fill(moviePressed, false);
 			moviePressed[3] = true;
 
