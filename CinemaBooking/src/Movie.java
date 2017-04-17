@@ -3,6 +3,14 @@ import java.io.Serializable;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+
+/**
+ * 
+ * Object to store Movie infomation
+ * 
+ * @author Darragh
+ *
+ */
 public class Movie implements Serializable{
 	
 	private static final long serialVersionUID = -7133647561789884916L;
@@ -11,6 +19,14 @@ public class Movie implements Serializable{
 	private ImageIcon img;
 	private String desp;
 
+	/**
+	 * 
+	 * Movie object constructor 
+	 * 
+	 * @param t Movie Title
+	 * @param i Movie Poster
+	 * @param d Movie Desp
+	 */
 	Movie(String t, ImageIcon i, String d) {
 		title = t;
 		img = i;
@@ -41,6 +57,9 @@ public class Movie implements Serializable{
 		desp = d;
 	}
 	
+	/**
+	 * Dev method to test Movie parameters before and after DB storage
+	 */
 	public void printAllDev(){
 		System.out.println("Title: " + title);
 		System.out.println("Img Height: " + img.getIconHeight() + " Img Width: " + img.getIconWidth());

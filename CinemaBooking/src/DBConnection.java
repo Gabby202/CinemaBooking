@@ -14,7 +14,14 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-class DBConnection {
+/**
+ * 
+ * Class to initialize and utilize DB Connector
+ * 
+ * @author Darragh
+ *
+ */
+public class DBConnection {
 
 	// DB connection info
 	private String DBDriver = "com.mysql.jdbc.Driver";
@@ -29,10 +36,12 @@ class DBConnection {
 	private static Connection conn = null;
 	private static Statement stmt = null;
 
+	/**
+	 * Constructor to create DB Connection
+	 */
 	private DBConnection() {
 
 		try {
-
 			Class.forName(DBDriver);
 
 			logger.log(Level.INFO, "Connecting to database...");
@@ -67,6 +76,12 @@ class DBConnection {
 		// Returns if failed or not
 	}
 
+	/**
+	 * 
+	 * Retrives movie object from DB
+	 * 
+	 * @return Vector with Movie Objects
+	 */
 	public Vector<Movie> getMovies() {
 		// Returns a vector of currant movies showing with their posters and
 		// descriptions
@@ -104,7 +119,15 @@ class DBConnection {
 		return movies; // returns vector
 
 	}
-
+	
+	/**
+	 * 
+	 * Drop currant table to replace with new updated Movie objects
+	 * Takes Vector of Movie Objects and stores them into new DB table
+	 * Replaces currant one to prevent multiple entries in DB
+	 * 
+	 * @param movies Vector Of Movie Objects
+	 */
 	public void setMovies(Vector<Movie> movies) {
 		// Attempts to set what movies are currently showing, set the poster for
 		// the movie, and the description
