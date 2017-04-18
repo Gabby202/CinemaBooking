@@ -5,8 +5,8 @@ public class Payment {
 	private String surName;
 	private String address1;
 	private String address2;
-	private String cardNo;
-	private String cvv;
+	private long cardNo;
+	private int cvv;
 
 	public String getFirstName() {
 		return "Name: " + firstName;
@@ -40,19 +40,19 @@ public class Payment {
 		this.address2 = address2;
 	}
 
-	public String getCardNo() {
-		return "Card Number: " + cardNo;
+	public long getCardNo() {
+		return cardNo;
 	}
 
-	public void setCardNo(String cardNo) {
+	public void setCardNo(long cardNo) {
 		this.cardNo = cardNo;
 	}
 
-	public String getCvv() {
-		return "CVV: " + cvv;
+	public int getCvv() {
+		return cvv;
 	}
 
-	public void setCvv(String cvv) {
+	public void setCvv(int cvv) {
 		this.cvv = cvv;
 	}
 

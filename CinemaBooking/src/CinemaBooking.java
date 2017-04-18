@@ -120,14 +120,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	}// end constructor
 
 	public void actionPerformed(ActionEvent e) {
-		CardLayout card = (CardLayout) mainContentPanel.getLayout(); // Get the
-																		// card
-																		// layout
-																		// from
-																		// the
-																		// main
-																		// panel
-		card.next(mainContentPanel);// Move to the next card in the card layout
+																
 
 	}
 
@@ -150,9 +143,23 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		buttonsPanel.setLayout(new GridLayout(1, 2));
 
 		backButton = createButton("Back");
-		backButton.addActionListener(this);
+		backButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				CardLayout card = (CardLayout) mainContentPanel.getLayout();
+				card.previous(mainContentPanel);
+			}
+			
+		});
 		nextButton = createButton("Next");
-		nextButton.addActionListener(this);
+		nextButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				CardLayout card = (CardLayout) mainContentPanel.getLayout();
+				card.next(mainContentPanel);
+			}
+			
+		});
 
 		// changes method depending on which panel
 		if (panelNumber == 1) {
@@ -162,7 +169,6 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		} else if (panelNumber == 2) {
 			panel.add(movieList());
 			card1Label.setText("Select Your Movie");
-
 		} else if (panelNumber == 3) {
 			panel.add(movieTimes());
 			card1Label.setText("Select Your Time");
@@ -333,8 +339,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 						JOptionPane.showMessageDialog(null, "Enter Valid Name");
 
 					} else {
+						
 						payment.setFirstName(nameField.getText());
 						paymentDetails[0].setText(payment.getFirstName());
+	
 					}
 					
 					if(surNameField.getText().length() < 1) {
@@ -359,20 +367,35 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 					
 		
 					if (cardNo.getText().length() < 16 || cardNo.getText().length() > 16) {
-						JOptionPane.showMessageDialog(null, "Enter Valid Card Number");
+						
+						try {
+						    long l = Long.valueOf(cardNo.getText());
+						    System.out.println("long" + l);
+							JOptionPane.showMessageDialog(null, "Enter Valid Card Number");
+
+						} catch (Exception ex) {
+						    System.out.println("not number");
+							JOptionPane.showMessageDialog(null, "Enter Valid Card Number");
+						}
 
 					} else {
-						payment.setCardNo(cardNo.getText());
-						paymentDetails[4].setText(payment.getCardNo());
+						payment.setCardNo(Long.parseLong(cardNo.getText()));
+						paymentDetails[4].setText(Long.toString(payment.getCardNo()));
 					}
 
 					if (cvv.getText().length() > 3 || cvv.getText().length() < 3) {
-						JOptionPane.showMessageDialog(null, "Enter Valid CVV Number");
-
+						try {
+						    int i = Integer.valueOf(cvv.getText());
+						        System.out.println("integer" + i);
+						} catch (Exception ex) {
+						    System.out.println("not number");
+							JOptionPane.showMessageDialog(null, "not a valid CVV Number");
+						}
+					
 					} else {
 
-						payment.setCvv(cvv.getText());
-						paymentDetails[5].setText(payment.getCvv());
+						payment.setCvv(Integer.parseInt(cvv.getText()));
+						paymentDetails[5].setText(Integer.toString(payment.getCvv()));
 					}
 
 				}
