@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -18,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -41,17 +43,19 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	JPanel cardPanel3 = buildCardPanel(3);
 	JPanel cardPanel4 = buildCardPanel(4);
 	JPanel cardPanel5 = buildCardPanel(5);
+	JPanel cardPanel6 = buildCardPanel(6);
 
 	JPanel buttonsPanel;
-	JButton nextButton;
-	JButton backButton;
+	JButton nextButton, backButton, submitPayment;
+	JTextField nameField, surNameField, add1, add2, cardNo, cvv;
 
 	// movie list method arrays made global to give mouse listener methods scope
 	JPanel moviePanel[], spacePanel[], descriptionPanel[], seat[];
-	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice;
+	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice, paymentDetails[];
 	Icon movieImage[];
 	boolean[] pressed;
 	boolean[] moviePressed;
+	Payment payment = new Payment();
 
 	/**
 	 * Constructor for program
@@ -102,6 +106,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		mainContentPanel.add(cardPanel3);
 		mainContentPanel.add(cardPanel4);
 		mainContentPanel.add(cardPanel5);
+		mainContentPanel.add(cardPanel6);
 
 		containerPanel.add(titlePanel, BorderLayout.NORTH);
 		containerPanel.add(leftColNav, BorderLayout.WEST);
@@ -167,6 +172,9 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		} else if (panelNumber == 5) {
 			panel.add(paymentInfo());
 			card1Label.setText("Payment Information");
+		} else if (panelNumber == 6) {
+			panel.add(receipt());
+			card1Label.setText("Receipt");
 		}
 
 		buttonsPanel.add(backButton);
@@ -181,9 +189,27 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	}
 
+	public JPanel receipt() {
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(10, 1));
+		formatPanel(panel);
+
+		paymentDetails = new JLabel[6];
+		for (int i = 0; i < paymentDetails.length; i++) {
+
+			paymentDetails[i] = new JLabel();
+			formatLabel(paymentDetails[i]);
+			paymentDetails[i].setHorizontalAlignment(JLabel.CENTER);
+			panel.add(paymentDetails[i]);
+		}
+
+		return panel;
+
+	}
+
 	public JPanel movieTimes() {
 		JPanel panel = new JPanel();
-		formatPanel(panel);
 		return panel;
 	}
 
@@ -191,6 +217,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 		JPanel panel = new JPanel();
 		formatPanel(panel);
+
 		return panel;
 	}
 
@@ -205,13 +232,13 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		JLabel nameLabel = new JLabel("Name: ");
 
 		formatLabel(nameLabel);
-		JTextField nameField = new JTextField(16);
+		nameField = new JTextField(16);
 		JLabel surnameLabel = new JLabel("Surname: ");
-		JTextField surNameField = new JTextField(16);
-		JTextField add1 = new JTextField(16);
-		JTextField add2 = new JTextField(16);
-		JTextField cardNo = new JTextField(16);
-		JTextField exp = new JTextField(16);
+		surNameField = new JTextField(16);
+		add1 = new JTextField(16);
+		add2 = new JTextField(16);
+		cardNo = new JTextField(16);
+		cvv = new JTextField(16);
 
 		String stringLabels[] = { "Name", "Surname", "Address", "Address 2 ", "CardNo", "Cvv" };
 		JLabel labels[] = new JLabel[6];
@@ -235,9 +262,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		fields[2].add(add1);
 		fields[3].add(add2);
 		fields[4].add(cardNo);
-		fields[5].add(exp);
+		fields[5].add(cvv);
 
 		for (int i = 0; i < panels.length; i++) {
+			fields[i] = new JTextField();
 			panels[i] = new JPanel();
 			spacePanel[i] = new JPanel();
 			labelPanel[i] = new JPanel();
@@ -278,6 +306,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			labels[i].setForeground(Color.WHITE);
 
 			formatLabel(labels[i]);
+
 		}
 
 		labelPanel[1].add(labels[0]);
@@ -293,13 +322,70 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		fieldPanel[2].add(innerFieldPanels[3]);
 		fieldPanel[3].add(innerFieldPanels[4]);
 		fieldPanel[3].add(innerFieldPanels[5]);
+		submitPayment = new JButton("Submit Detials");
+		formatButton(submitPayment);
+		submitPayment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (e.getSource() == submitPayment) {
+					
+					if(nameField.getText().length() < 1) {
+						JOptionPane.showMessageDialog(null, "Enter Valid Name");
+
+					} else {
+						payment.setFirstName(nameField.getText());
+						paymentDetails[0].setText(payment.getFirstName());
+					}
+					
+					if(surNameField.getText().length() < 1) {
+						JOptionPane.showMessageDialog(null, "Enter Valid Surname");
+
+					} else {
+						payment.setSurName(surNameField.getText());
+						paymentDetails[1].setText(payment.getSurName());
+					}
+					
+					if(add1.getText().length() < 1) {
+						JOptionPane.showMessageDialog(null, "Enter Address");
+
+					} else {
+						payment.setAddress1(add1.getText());
+						paymentDetails[2].setText(payment.getAddress1());
+					}
+				
+					
+					payment.setAddress2(add2.getText());
+					paymentDetails[3].setText(payment.getAddress2());
+					
+		
+					if (cardNo.getText().length() < 16 || cardNo.getText().length() > 16) {
+						JOptionPane.showMessageDialog(null, "Enter Valid Card Number");
+
+					} else {
+						payment.setCardNo(cardNo.getText());
+						paymentDetails[4].setText(payment.getCardNo());
+					}
+
+					if (cvv.getText().length() > 3 || cvv.getText().length() < 3) {
+						JOptionPane.showMessageDialog(null, "Enter Valid CVV Number");
+
+					} else {
+
+						payment.setCvv(cvv.getText());
+						paymentDetails[5].setText(payment.getCvv());
+					}
+
+				}
+			}
+		});
+		fieldPanel[4].add(submitPayment);
 
 		innerFieldPanels[0].add(nameField);
 		innerFieldPanels[1].add(surNameField);
 		innerFieldPanels[2].add(add1);
 		innerFieldPanels[3].add(add2);
 		innerFieldPanels[4].add(cardNo);
-		innerFieldPanels[5].add(exp);
+		innerFieldPanels[5].add(cvv);
 
 		for (int x = 0; x < 6; x++) {
 			innerFieldPanels[x].setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 100));
@@ -505,6 +591,16 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		button.setBorder(compound);
 		return button;
 	}
+	
+	public JButton formatButton(JButton button) {
+		button.setForeground(Color.WHITE);
+		button.setBackground(new Color(107, 106, 104));
+		Border line = new LineBorder(Color.GRAY);
+		Border margin = new EmptyBorder(5, 15, 5, 15);
+		Border compound = new CompoundBorder(line, margin);
+		button.setBorder(compound);
+		return button;
+	}
 
 	/**
 	 * 
@@ -538,6 +634,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
+		moviePressed = new boolean[4];
 
 		// change background color of selected panel in movie list
 		if (e.getSource() == moviePanel[0]) {
@@ -581,7 +679,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			moviePanel[2].setBackground(new Color(148, 146, 143));
 			spacePanel[2].setBackground(new Color(148, 146, 143));
 			descriptionPanel[2].setBackground(new Color(148, 146, 143));
-			movieChoice.setText(movieLabel[2].getText());
+			// movieChoice.setText(movieLabel[2].getText());
 
 			Arrays.fill(moviePressed, false);
 			moviePressed[2] = true;
