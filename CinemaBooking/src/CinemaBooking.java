@@ -49,17 +49,18 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	JPanel cardPanel5 = buildCardPanel(5);
 
 	JPanel buttonsPanel;
-	JButton nextButton, backButton, submitPayment;
+	JButton nextButton, backButton, submitPayment, submitSeats, clearSeats;
 	JTextField nameField, surNameField, add1, add2, cardNo, cvv;
 
 	// movie list method arrays made global to give mouse listener methods scope
 	JPanel moviePanel[], spacePanel[], descriptionPanel[], seat[];
-	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice, paymentDetails[];
+	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice, paymentDetails[], testLabel;
 	JComboBox<?> times[];
 	Icon movieImage[];
 	boolean[] pressed;
 	boolean[] moviePressed;
 	Payment payment = new Payment();
+	Seat seats = new Seat();
 
 	/**
 	 * Constructor for program
@@ -412,32 +413,25 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		formatLabel(reviewLabel);
 		labelPanel[5].add(reviewLabel);
 
-		movieChoice = new JLabel();
-		timeChoice = new JLabel();
-		seatChoice = new JLabel();
-		totalPrice = new JLabel();
+	
 
-		JLabel movieChoiceLabel = new JLabel("Movie: " + movieChoice.getText());
-		JLabel timeChoiceLabel = new JLabel("Time: " + timeChoice.getText());
-		JLabel seatChoiceLabel = new JLabel("Seat: " + seatChoice.getText());
-		JLabel totalPriceLabel = new JLabel("Total: €" + totalPrice.getText());
 
 		formatLabel(movieChoice);
 		formatLabel(timeChoice);
 		formatLabel(seatChoice);
 		formatLabel(totalPrice);
 
-		formatLabel(movieChoiceLabel);
-		formatLabel(timeChoiceLabel);
-		formatLabel(seatChoiceLabel);
-		formatLabel(totalPriceLabel);
+		formatLabel(movieChoice);
+		formatLabel(timeChoice);
+		formatLabel(seatChoice);
+		formatLabel(totalPrice);
 
 		fieldPanel[5].setLayout(new GridLayout(4, 2));
-		fieldPanel[5].add(movieChoiceLabel);
-		fieldPanel[5].add(totalPriceLabel);
-		fieldPanel[5].add(timeChoiceLabel);
+		fieldPanel[5].add(movieChoice);
+		fieldPanel[5].add(totalPrice);
+		fieldPanel[5].add(timeChoice);
 		fieldPanel[5].add(new JLabel(""));
-		fieldPanel[5].add(seatChoiceLabel);
+		fieldPanel[5].add(seatChoice);
 
 		paymentInfo.add(mainContent);
 		mainContent.setBackground(new Color(107, 106, 104));
@@ -570,7 +564,74 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			// 1));
 			paddingPanel[i].setBackground(new Color(97, 96, 94));
 		}
+		
+		submitSeats = new JButton("Submit");
+		clearSeats = new JButton("Clear");
+		
+		formatButton(submitSeats);
+		formatButton(clearSeats);
+		seatChoice = new JLabel("Seat: ");
+		movieChoice = new JLabel("Movie: ");
+		timeChoice = new JLabel("Time: ");
+		totalPrice = new JLabel("Total :");
+		pressed = new boolean[100];
+		Arrays.fill(pressed, false);
 
+	
+		submitSeats.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				if(e.getSource() == submitSeats) {
+
+					System.out.println(seats.getSeat());
+					seatChoice.setText("Seat Number Chosen: " + seats.getSeat());
+					totalPrice.setText("Total: ");
+					movieChoice.setText("Movie: ");
+					timeChoice.setText("Time: ");
+					
+					
+				}
+				
+			
+			}
+			
+		});
+		
+		clearSeats.addActionListener(new ActionListener() {
+
+			
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == clearSeats) {
+					for (int i = 0; i < 100; i++) {
+						// hides seats that are supposed to be walking paths
+						if (i >= 70 && i <= 79) {
+							seat[i].setBackground(new Color(97, 96, 94));
+						}
+
+						else if (i >= 20 && i <= 29) {
+							seat[i].setBackground(new Color(97, 96, 94));
+						}
+
+						else if (i == 22 || i == 32 || i == 42 || i == 52 || i == 62) {
+							seat[i].setBackground(new Color(97, 96, 94));
+						}
+
+						else if (i == 27 || i == 37 || i == 47 || i == 57 || i == 67) {
+							seat[i].setBackground(new Color(97, 96, 94));
+						} else {
+							seat[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+							seat[i].setBackground(new Color(117, 116, 114));
+						//	seat[i].addMouseListener(this);
+						}					}
+				}
+			}
+			
+		});
+		paddingPanel[3].add(clearSeats);
+		paddingPanel[3].add(submitSeats);
+
+		
 		container.setLayout(new GridLayout(10, 10));
 
 		// create seats
@@ -724,6 +785,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			moviePressed[1] = true;
 
 			System.out.println("Movie 2 = " + moviePressed[1]);
+			
 
 		} else {
 			moviePanel[1].setBackground(new Color(107, 106, 104));
@@ -794,7 +856,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
-
+				
 				// seat[i].setBackground(new Color(137, 136, 134));
 			}
 		}
@@ -828,6 +890,7 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			}
 
 			if (pressed[i] == true) {
+				seats.setSeat(i);
 				seat[i].setBackground(new Color(137, 136, 134));
 			}
 		}

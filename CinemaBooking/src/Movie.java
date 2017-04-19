@@ -28,11 +28,16 @@ public class Movie implements Serializable{
 	 * @param i Movie Poster
 	 * @param d Movie Description
 	 */
-	Movie(String t, ImageIcon i, String[] tm) {
+	public Movie(String t, ImageIcon i, String[] tm) {
 		title = t;
 		img = i;
 		seats = new int[tm.length][100];
 		times = tm;
+	}
+	
+	public Movie() {
+		
+		
 	}
 
 	public String getTitle() {
