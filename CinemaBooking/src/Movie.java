@@ -17,7 +17,8 @@ public class Movie implements Serializable{
 	
 	private String title;
 	private ImageIcon img;
-	private String desp;
+	private int[][] seats;
+	private String times[];
 
 	/**
 	 * 
@@ -27,10 +28,11 @@ public class Movie implements Serializable{
 	 * @param i Movie Poster
 	 * @param d Movie Description
 	 */
-	Movie(String t, ImageIcon i, String d) {
+	Movie(String t, ImageIcon i, String[] tm) {
 		title = t;
 		img = i;
-		desp = d;
+		seats = new int[tm.length][100];
+		times = tm;
 	}
 
 	public String getTitle() {
@@ -48,13 +50,18 @@ public class Movie implements Serializable{
 	public void setImg(ImageIcon i) {
 		img = i;
 	}
-
-	public String getDesp() {
-		return desp;
+	
+	public int[] getSeats(int time) {
+		return seats[time];
 	}
 
-	public void setDesp(String d) {
-		desp = d;
+
+	public String[] getTimes() {
+		return times;
+	}
+
+	public void setTimes(String t[]) {
+		times = t;
 	}
 	
 	/**
@@ -63,6 +70,15 @@ public class Movie implements Serializable{
 	public void printAllDev(){
 		System.out.println("Title: " + title);
 		System.out.println("Img Height: " + img.getIconHeight() + " Img Width: " + img.getIconWidth());
-		System.out.println("Desp: " + desp);
+		System.out.print("Times: ");
+		for(String i : times){
+			System.out.print(i + " ");
+		}
+		System.out.println("");
+		System.out.println("Seats for first showing: ");
+		for(int i: getSeats(0)){
+			System.out.print(i + " ");
+		}
+		
 	}
 }

@@ -39,7 +39,7 @@ public class DBConnection {
 	/**
 	 * Constructor to create DB Connection
 	 */
-	private DBConnection() {
+	public DBConnection() {
 
 		try {
 			Class.forName(DBDriver);
@@ -88,7 +88,7 @@ public class DBConnection {
 
 		String sql = "SELECT * FROM movies";
 		ResultSet rs = null;
-		try {//creates ResultSet
+		try {// creates ResultSet
 			rs = stmt.executeQuery(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -97,14 +97,14 @@ public class DBConnection {
 		Vector<Movie> movies = new Vector<Movie>();
 
 		try {
-			while (rs.next()) {//converts Byte array back into object
+			while (rs.next()) {// converts Byte array back into object
 				ByteArrayInputStream bais;
 				ObjectInputStream ins;
 
 				bais = new ByteArrayInputStream(rs.getBytes("movieObject"));
 				ins = new ObjectInputStream(bais);
 
-				Movie movie = (Movie) ins.readObject();//adds object to vector
+				Movie movie = (Movie) ins.readObject();// adds object to vector
 				movies.add(movie);
 				ins.close();
 			}
@@ -119,32 +119,35 @@ public class DBConnection {
 		return movies; // returns vector
 
 	}
-	
+
 	/**
 	 * 
-	 * Drop currant table to replace with new updated Movie objects
-	 * Takes Vector of Movie Objects and stores them into new DB table
-	 * Replaces currant one to prevent multiple entries in DB
+	 * Drop currant table to replace with new updated Movie objects Takes Vector
+	 * of Movie Objects and stores them into new DB table Replaces currant one
+	 * to prevent multiple entries in DB
 	 * 
-	 * @param movies Vector Of Movie Objects
+	 * @param movies
+	 *            Vector Of Movie Objects
 	 */
 	public void setMovies(Vector<Movie> movies) {
 		// Attempts to set what movies are currently showing, set the poster for
 		// the movie, and the description
-		
+
 		PreparedStatement ps = null;
-		
-		try {//creates new table, and drops if it already exists to prevent multiple entries in table of the same movie
+
+		try {// creates new table, and drops if it already exists to prevent
+				// multiple entries in table of the same movie
 			ps = conn.prepareStatement("DROP TABLE IF EXISTS movies;");
 			ps.executeUpdate();
-			ps = conn.prepareStatement("CREATE TABLE movies (id int(10) unsigned NOT NULL AUTO_INCREMENT, movieObject longblob, PRIMARY KEY (id));");
+			ps = conn.prepareStatement(
+					"CREATE TABLE movies (id int(10) unsigned NOT NULL AUTO_INCREMENT, movieObject longblob, PRIMARY KEY (id));");
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			logger.log(Level.WARNING, "SQLException - Table Clearance and Creation: " + e.getMessage());
 		}
 
 		for (int i = 0; i < movies.size(); i++) {
-			try {//inserts movie object(s) in table
+			try {// inserts movie object(s) in table
 				String sql = "INSERT INTO movies (movieObject) values(?)";
 				ps = conn.prepareStatement(sql);
 				ps.setObject(1, movies.elementAt(i));
@@ -175,10 +178,27 @@ public class DBConnection {
 	// for testing of object storage and retrieval
 	public static void main(String[] args) {
 		DBConnection conn = new DBConnection();
-		Vector<Movie> moviesSet = new Vector<Movie>();
-		moviesSet.add(new Movie("SuperMan-Update-Test", new ImageIcon("images/the_hobbit1.jpg"), "Test Movie"));
+		Vector<Movie> movies = new Vector<Movie>();
 
-		conn.setMovies(moviesSet);
+		ImageIcon movieImage[] = new ImageIcon[4];
+		movieImage[0] = new ImageIcon("images/the_hobbit1.jpg");
+		movieImage[1] = new ImageIcon("images/captain_america1.jpg");
+		movieImage[2] = new ImageIcon("images/hunger_games1.jpg");
+		movieImage[3] = new ImageIcon("images/star_wars1.jpg");
+
+		String movieDescription[] = new String[4];
+		movieDescription[0] = "The Hobbit: The Desolation Of Smaug";
+		movieDescription[1] = "Captain America: Civil War";
+		movieDescription[2] = "The Hunger Games: Mockingjay";
+		movieDescription[3] = "Star Wars: The Force Awakens";
+
+		String times[] = { "1:00 pm", "3:00 pm", "5:00 pm", "7:30 pm" };
+
+		for (int i = 0; i < 4; i++) {
+			movies.add(new Movie(movieDescription[i], movieImage[i], times));
+		}
+
+		conn.setMovies(movies);
 		Vector<Movie> moviesGet = conn.getMovies();
 
 		for (int i = 0; i < moviesGet.size(); i++) {
