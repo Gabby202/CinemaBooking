@@ -59,6 +59,14 @@ public class Movie implements Serializable{
 	public int[] getSeats(int time) {
 		return seats[time];
 	}
+	
+	public int getSeat(int time, int s) {
+		return seats[time][s];
+	}
+	
+	public void setSeat(int time,int s,int action){
+		seats[time][s] = action;
+	}
 
 
 	public String[] getTimes() {
@@ -84,6 +92,7 @@ public class Movie implements Serializable{
 		for(int i: getSeats(0)){
 			System.out.print(i + " ");
 		}
+		System.out.println();
 		
 	}
 }

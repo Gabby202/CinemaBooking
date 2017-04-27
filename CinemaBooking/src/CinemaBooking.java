@@ -40,6 +40,8 @@ import javax.swing.border.LineBorder;
 public class CinemaBooking extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
 	DBConnection conn = new DBConnection();
+	
+	Vector<Movie> movies = conn.getMovies();
 
 	JPanel mainContentPanel = new JPanel();
 	JPanel cardPanel1 = buildCardPanel(1);
@@ -54,11 +56,14 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 
 	// movie list method arrays made global to give mouse listener methods scope
 	JPanel moviePanel[], spacePanel[], descriptionPanel[], seat[];
-	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice, paymentDetails[], testLabel;
+	JLabel movieLabel[], movieDescription[], movieChoice, timeChoice, seatChoice, totalPrice, paymentDetails[],
+			testLabel;
 	JComboBox<?> times[];
+	String selectedMovie;
 	Icon movieImage[];
 	boolean[] pressed;
 	boolean[] moviePressed;
+	int timeSelected;
 	Payment payment = new Payment();
 	Seat seats = new Seat();
 
@@ -160,6 +165,36 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			public void actionPerformed(ActionEvent e) {
 				CardLayout card = (CardLayout) mainContentPanel.getLayout();
 				card.next(mainContentPanel);
+				
+				for (int i = 0; i < 100; i++) {
+					// hides seats that are supposed to be walking paths
+					if (i >= 70 && i <= 79) {
+						seat[i].setBackground(new Color(97, 96, 94));
+					}
+
+					else if (i >= 20 && i <= 29) {
+						seat[i].setBackground(new Color(97, 96, 94));
+					}
+
+					else if (i == 22 || i == 32 || i == 42 || i == 52 || i == 62) {
+						seat[i].setBackground(new Color(97, 96, 94));
+					}
+
+					else if (i == 27 || i == 37 || i == 47 || i == 57 || i == 67) {
+						seat[i].setBackground(new Color(97, 96, 94));
+					} else {
+						seat[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+						for(int j = 0; j < movies.size(); j++){
+							if(movies.elementAt(j).getTitle().equals(selectedMovie)){
+								if(movies.elementAt(j).getSeat(timeSelected - 1, i) == 1){
+									seat[i].setBackground(Color.red);
+								}else{
+									seat[i].setBackground(new Color(117, 116, 114));
+								}
+							}
+						}
+					}
+				}
 			}
 
 		});
@@ -389,6 +424,14 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 						payment.setCvv(Integer.parseInt(cvv.getText()));
 						paymentDetails[5].setText(Integer.toString(payment.getCvv()));
 					}
+					
+					for(int j = 0; j < movies.size(); j++){
+						if(movies.elementAt(j).getTitle().equals(selectedMovie)){
+							movies.elementAt(j).setSeat(timeSelected - 1, seats.getSeat(), 1);
+						}
+					}
+					
+					conn.setMovies(movies);
 
 				}
 			}
@@ -413,9 +456,6 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		formatLabel(reviewLabel);
 		labelPanel[5].add(reviewLabel);
 
-	
-
-
 		formatLabel(movieChoice);
 		formatLabel(timeChoice);
 		formatLabel(seatChoice);
@@ -426,12 +466,12 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		formatLabel(seatChoice);
 		formatLabel(totalPrice);
 
-		fieldPanel[5].setLayout(new GridLayout(4, 2));
+		fieldPanel[5].setLayout(new GridLayout(4, 1));
 		fieldPanel[5].add(movieChoice);
-		fieldPanel[5].add(totalPrice);
 		fieldPanel[5].add(timeChoice);
-		fieldPanel[5].add(new JLabel(""));
 		fieldPanel[5].add(seatChoice);
+		fieldPanel[5].add(totalPrice);
+		
 
 		paymentInfo.add(mainContent);
 		mainContent.setBackground(new Color(107, 106, 104));
@@ -462,8 +502,6 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	 */
 	// method for showing list of movies
 	public JPanel movieList() {
-
-		Vector<Movie> movies = conn.getMovies();
 
 		JPanel movieList = new JPanel();
 		movieList.setLayout(new GridLayout(movies.size(), 1));
@@ -516,6 +554,17 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 				timesList[j] = movies.elementAt(i).getTimes()[j - 1];
 			}
 			times[i] = new JComboBox<String>(timesList);
+			times[i].addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent e) {
+					for(int i = 0; i < times.length; i++){
+						if(times[i].isEnabled()){
+							timeSelected = times[i].getSelectedIndex();
+							System.out.println(timeSelected);
+						}
+					}
+				}	
+			});
 			times[i].setEnabled(false);
 
 			gbc.gridx = 0;
@@ -564,10 +613,10 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 			// 1));
 			paddingPanel[i].setBackground(new Color(97, 96, 94));
 		}
-		
+
 		submitSeats = new JButton("Submit");
 		clearSeats = new JButton("Clear");
-		
+
 		formatButton(submitSeats);
 		formatButton(clearSeats);
 		seatChoice = new JLabel("Seat: ");
@@ -577,32 +626,30 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 		pressed = new boolean[100];
 		Arrays.fill(pressed, false);
 
-	
 		submitSeats.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				if(e.getSource() == submitSeats) {
 
+			public void actionPerformed(ActionEvent e) {
+
+				if (e.getSource() == submitSeats) {
+					
 					System.out.println(seats.getSeat());
-					seatChoice.setText("Seat Number Chosen: " + seats.getSeat());
-					totalPrice.setText("Total: ");
-					movieChoice.setText("Movie: ");
-					timeChoice.setText("Time: ");
+					seatChoice.setText("Seat Number: " + seats.getSeat());
+					totalPrice.setText("Total: €9.45");
+					movieChoice.setText("Movie: " + selectedMovie);
 					
-					
+					for(int i = 0; i < movies.size(); i++){
+						if(movies.elementAt(i).getTitle().equals(selectedMovie)){
+							timeChoice.setText("Time: " + times[i].getSelectedItem());
+						}
+					}
 				}
-				
-			
 			}
-			
 		});
-		
+
 		clearSeats.addActionListener(new ActionListener() {
 
-			
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == clearSeats) {
+				if (e.getSource() == clearSeats) {
 					for (int i = 0; i < 100; i++) {
 						// hides seats that are supposed to be walking paths
 						if (i >= 70 && i <= 79) {
@@ -621,17 +668,24 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 							seat[i].setBackground(new Color(97, 96, 94));
 						} else {
 							seat[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-							seat[i].setBackground(new Color(117, 116, 114));
-						//	seat[i].addMouseListener(this);
-						}					}
+							for(int j = 0; j < movies.size(); j++){
+								if(movies.elementAt(j).getTitle().equals(selectedMovie)){
+									if(movies.elementAt(j).getSeat(timeSelected - 1, i) == 1){
+										seat[i].setBackground(Color.red);
+									}else{
+										seat[i].setBackground(new Color(117, 116, 114));
+									}
+								}
+							}
+						}
+					}
 				}
 			}
-			
+
 		});
 		paddingPanel[3].add(clearSeats);
 		paddingPanel[3].add(submitSeats);
 
-		
 		container.setLayout(new GridLayout(10, 10));
 
 		// create seats
@@ -656,7 +710,18 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 				seat[s].setBackground(new Color(97, 96, 94));
 			} else {
 				seat[s].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-				seat[s].setBackground(new Color(117, 116, 114));
+				for(int i = 0; i < movies.size(); i++){
+					if(movies.elementAt(i).getTitle().equals(selectedMovie)){
+						if(movies.elementAt(i).getSeat(timeSelected - 1, s) == 1){
+							seat[s].setBackground(Color.red);
+						}else{
+							seat[s].setBackground(new Color(117, 116, 114));
+						}
+					}else{
+						seat[s].setBackground(new Color(117, 116, 114));
+					}
+				}
+				//seat[s].setBackground(new Color(117, 116, 114));
 				seat[s].addMouseListener(this);
 			}
 
@@ -738,139 +803,47 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-		moviePressed = new boolean[4];
-
+		moviePressed = new boolean[movies.size()];
+		
 		// change background color of selected panel in movie list
-		if (e.getSource() == moviePanel[0]) {
-			moviePanel[0].setBackground(new Color(148, 146, 143));
-			spacePanel[0].setBackground(new Color(148, 146, 143));
-			descriptionPanel[0].setBackground(new Color(148, 146, 143));
-			movieChoice.setText(movieLabel[0].getText());
-			Arrays.fill(moviePressed, false);
-			
-			for(int i = 0; i < times.length; i++){
-				if(i == 0){
-					times[i].setEnabled(true);
-				}else{
-					times[i].setEnabled(false);
+		for(int i = 0; i < movies.size(); i++){
+			if (e.getSource() == moviePanel[i]) {
+				moviePanel[i].setBackground(new Color(148, 146, 143));
+				spacePanel[i].setBackground(new Color(148, 146, 143));
+				descriptionPanel[i].setBackground(new Color(148, 146, 143));
+				// movieChoice.setText(movieLabel[2].getText());
+
+				for (int j = 0; j < times.length; j++) {
+					if (j == i) {
+						times[j].setEnabled(true);
+					} else {
+						times[j].setSelectedIndex(0);
+						times[j].setEnabled(false);
+					}
 				}
+
+				Arrays.fill(moviePressed, false);
+				moviePressed[i] = true;
+
+				System.out.println("Movie " + i + " = " + moviePressed[i]);
+				selectedMovie = movies.elementAt(i).getTitle();
+
+			} else {
+				moviePanel[i].setBackground(new Color(107, 106, 104));
+				spacePanel[i].setBackground(new Color(107, 106, 104));
+				descriptionPanel[i].setBackground(new Color(107, 106, 104));
+				// movieChoice.setText("");
+
 			}
-
-			moviePressed[0] = true;
-			System.out.println("Movie 1 = " + moviePressed[0]);
-
-		} else {
-			moviePanel[0].setBackground(new Color(107, 106, 104));
-			spacePanel[0].setBackground(new Color(107, 106, 104));
-			descriptionPanel[0].setBackground(new Color(107, 106, 104));
-			// movieChoice.setText("");
-
 		}
-
-		if (e.getSource() == moviePanel[1]) {
-			moviePanel[1].setBackground(new Color(148, 146, 143));
-			spacePanel[1].setBackground(new Color(148, 146, 143));
-			descriptionPanel[1].setBackground(new Color(148, 146, 143));
-			movieChoice.setText(movieLabel[1].getText());
-			
-			for(int i = 0; i < times.length; i++){
-				if(i == 1){
-					times[i].setEnabled(true);
-				}else{
-					times[i].setEnabled(false);
-				}
-			}
-
-			Arrays.fill(moviePressed, false);
-			moviePressed[1] = true;
-
-			System.out.println("Movie 2 = " + moviePressed[1]);
-			
-
-		} else {
-			moviePanel[1].setBackground(new Color(107, 106, 104));
-			spacePanel[1].setBackground(new Color(107, 106, 104));
-			descriptionPanel[1].setBackground(new Color(107, 106, 104));
-			// movieChoice.setText("");
-
-		}
-
-		if (e.getSource() == moviePanel[2]) {
-			moviePanel[2].setBackground(new Color(148, 146, 143));
-			spacePanel[2].setBackground(new Color(148, 146, 143));
-			descriptionPanel[2].setBackground(new Color(148, 146, 143));
-			// movieChoice.setText(movieLabel[2].getText());
-			
-			for(int i = 0; i < times.length; i++){
-				if(i == 2){
-					times[i].setEnabled(true);
-				}else{
-					times[i].setEnabled(false);
-				}
-			}
-
-			Arrays.fill(moviePressed, false);
-			moviePressed[2] = true;
-
-			System.out.println("Movie 3 = " + moviePressed[2]);
-
-		} else {
-			moviePanel[2].setBackground(new Color(107, 106, 104));
-			spacePanel[2].setBackground(new Color(107, 106, 104));
-			descriptionPanel[2].setBackground(new Color(107, 106, 104));
-			// movieChoice.setText("");
-
-		}
-
-		if (e.getSource() == moviePanel[3]) {
-			moviePanel[3].setBackground(new Color(148, 146, 143));
-			spacePanel[3].setBackground(new Color(148, 146, 143));
-			descriptionPanel[3].setBackground(new Color(148, 146, 143));
-			movieChoice.setText(movieLabel[3].getText());
-			
-			for(int i = 0; i < times.length; i++){
-				if(i == 3){
-					times[i].setEnabled(true);
-				}else{
-					times[i].setEnabled(false);
-				}
-			}
-
-			Arrays.fill(moviePressed, false);
-			moviePressed[3] = true;
-
-			System.out.println("Movie 4 = " + moviePressed[3]);
-
-		} else {
-			moviePanel[3].setBackground(new Color(107, 106, 104));
-			spacePanel[3].setBackground(new Color(107, 106, 104));
-			descriptionPanel[3].setBackground(new Color(107, 106, 104));
-			// movieChoice.setText("");
-
-		}
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
-		for (int i = 0; i < 100; i++) {
-			if (e.getSource() == seat[i]) {
-				
-				// seat[i].setBackground(new Color(137, 136, 134));
-			}
-		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		pressed = new boolean[100];
-		/*
-		 * for (int i = 0; i < 100; i++) { if (e.getSource() == seat[i]) {
-		 * seat[i].setBackground(new Color(117, 116, 114)); }
-		 * 
-		 * }
-		 */
 
 	}
 
@@ -879,14 +852,52 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		
 		pressed = new boolean[100];
 		Arrays.fill(pressed, false);
+		
+		for (int i = 0; i < 100; i++) {
+			// hides seats that are supposed to be walking paths
+			if (i >= 70 && i <= 79) {
+				seat[i].setBackground(new Color(97, 96, 94));
+			}
 
+			else if (i >= 20 && i <= 29) {
+				seat[i].setBackground(new Color(97, 96, 94));
+			}
+
+			else if (i == 22 || i == 32 || i == 42 || i == 52 || i == 62) {
+				seat[i].setBackground(new Color(97, 96, 94));
+			}
+
+			else if (i == 27 || i == 37 || i == 47 || i == 57 || i == 67) {
+				seat[i].setBackground(new Color(97, 96, 94));
+			} else {
+				seat[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+				for(int j = 0; j < movies.size(); j++){
+					if(movies.elementAt(j).getTitle().equals(selectedMovie)){
+						if(movies.elementAt(j).getSeat(timeSelected - 1, i) == 1){
+							seat[i].setBackground(Color.red);
+						}else{
+							seat[i].setBackground(new Color(117, 116, 114));
+						}
+					}
+				}
+			}
+		}
+		
 		for (int i = 0; i < 100; i++) {
 			if (e.getSource() == seat[i]) {
-				pressed[i] = true;
-				System.out.println("pressed at index " + i + " " + pressed[i]);
-
+				if(i != 0){
+					for(int j = 0; j < movies.size(); j++){
+						if(movies.elementAt(j).getTitle().equals(selectedMovie)){
+							if(movies.elementAt(j).getSeat(timeSelected - 1, i) == 0){
+								pressed[i] = true;
+								System.out.println("pressed at index " + i + " " + pressed[i]);
+							}
+						}
+					}
+				}
 			}
 
 			if (pressed[i] == true) {

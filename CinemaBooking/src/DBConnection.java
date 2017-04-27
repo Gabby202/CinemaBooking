@@ -28,8 +28,8 @@ public class DBConnection {
 	private String DBPort = "3306";
 	private String DBName = "CinemaBooking";
 	private String DBUrl = "jdbc:mysql://localhost:" + DBPort + "/" + DBName + "?useSSL=false";
-	private String DBUser = "root";
-	private String DBPass = "";
+	private String DBUser = "myuser";
+	private String DBPass = "1234";
 
 	private final static Logger logger = Logger.getLogger(DBConnection.class.getName());
 
@@ -65,16 +65,6 @@ public class DBConnection {
 	// depending how we want to deal with the error
 	// For if we want to how an error somewhere we will need to throw an error,
 	// but some errors can be dealt within this class
-
-	public static void Login(String userName, char[] password) {
-		// Attempts to confirm login details
-		// Returns account type, or null for an error
-	}
-
-	public static void Register(String userName, char[] pass, String name, String email) {
-		// Attempts to register a new user
-		// Returns if failed or not
-	}
 
 	/**
 	 * 
@@ -158,23 +148,6 @@ public class DBConnection {
 		}
 	}
 
-	public static void getTimes(String movie) {
-		// Attempts to get the times for selected movie
-	}
-
-	public static void setTimes(String movie, Date times) {
-		// Attempts to set the times for selected movie
-	}
-
-	public static void getSeats(String movie, Date time) {
-		// Returns to the seating data for a movie at a certain date
-	}
-
-	public static void setSeat(int row, int col, int state) {
-		// Attempts to set the state of a selected seat
-		// i.e. take or not
-	}
-
 	// for testing of object storage and retrieval
 	public static void main(String[] args) {
 		DBConnection conn = new DBConnection();
@@ -186,18 +159,20 @@ public class DBConnection {
 		movieImage[2] = new ImageIcon("images/hunger_games1.jpg");
 		movieImage[3] = new ImageIcon("images/star_wars1.jpg");
 
-		String movieDescription[] = new String[4];
-		movieDescription[0] = "The Hobbit: The Desolation Of Smaug";
-		movieDescription[1] = "Captain America: Civil War";
-		movieDescription[2] = "The Hunger Games: Mockingjay";
-		movieDescription[3] = "Star Wars: The Force Awakens";
+		String movieTitle[] = new String[4];
+		movieTitle[0] = "The Hobbit: The Desolation Of Smaug";
+		movieTitle[1] = "Captain America: Civil War";
+		movieTitle[2] = "The Hunger Games: Mockingjay";
+		movieTitle[3] = "Star Wars: The Force Awakens";
 
 		String times[] = { "1:00 pm", "3:00 pm", "5:00 pm", "7:30 pm" };
 
 		for (int i = 0; i < 4; i++) {
-			movies.add(new Movie(movieDescription[i], movieImage[i], times));
+			movies.add(new Movie(movieTitle[i], movieImage[i], times));
 		}
 
+		movies.elementAt(0).setSeat(0, 96, 1);
+		
 		conn.setMovies(movies);
 		Vector<Movie> moviesGet = conn.getMovies();
 
