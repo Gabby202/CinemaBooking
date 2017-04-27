@@ -28,8 +28,8 @@ public class DBConnection {
 	private String DBPort = "3306";
 	private String DBName = "CinemaBooking";
 	private String DBUrl = "jdbc:mysql://localhost:" + DBPort + "/" + DBName + "?useSSL=false";
-	private String DBUser = "myuser";
-	private String DBPass = "1234";
+	private String DBUser = "root";
+	private String DBPass = "";
 
 	private final static Logger logger = Logger.getLogger(DBConnection.class.getName());
 

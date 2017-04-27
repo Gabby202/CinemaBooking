@@ -23,10 +23,9 @@ public class Movie implements Serializable{
 	/**
 	 * 
 	 * Movie object constructor 
-	 * 
+	 * @param tm time 
 	 * @param t Movie Title
 	 * @param i Movie Poster
-	 * @param d Movie Description
 	 */
 	public Movie(String t, ImageIcon i, String[] tm) {
 		title = t;
