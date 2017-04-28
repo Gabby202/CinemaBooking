@@ -471,6 +471,8 @@ public class CinemaBooking extends JFrame implements ActionListener, MouseListen
 						try {
 							int i = Integer.valueOf(cvv.getText());
 							System.out.println("integer" + i);
+							JOptionPane.showMessageDialog(null, "Enter Valid CVV Number");
+
 						} catch (Exception ex) {
 							System.out.println("not number");
 							JOptionPane.showMessageDialog(null, "not a valid CVV Number");
